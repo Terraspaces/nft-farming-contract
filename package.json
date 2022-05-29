@@ -1,0 +1,22 @@
+{
+  "name": "near-programs",
+  "version": "1.0.0",
+  "description": "near-program for alpha.art",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PiggyDao/near-programs.git"
+  },
+  "author": "clever sos",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/PiggyDao/near-programs/issues"
+  },
+  "homepage": "https://github.com/PiggyDao/near-programs#readme",
+  "dependencies": {
+    "near-api-js": "^0.44.2"
+  }
+}
