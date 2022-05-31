@@ -49,7 +49,7 @@ switch (configSetting) {
     console.log(`please choose a configuration `);
 }
 
-const FARM_CONTRACT_ID = "terraspaces_farm_test_1.xuguangxia.testnet";
+const FARM_CONTRACT_ID = "terraspaces_farm_test_2.xuguangxia.testnet";
 const NFT_CONTRACT_ID = "launchpad_test_4.xuguangxia.testnet";
 
 const viewFunction = async () => {
@@ -75,18 +75,18 @@ const viewFunction = async () => {
   // });
   // console.log("USN returned");
 
-  // await xu_account.functionCall({
-  //   contractId: NFT_CONTRACT_ID,
-  //   methodName: "nft_approve",
-  //   args: {
-  //     token_id: "4",
-  //     account_id: FARM_CONTRACT_ID,
-  //     msg: JSON.stringify({ staking_status: "Staking to Farm" })
-  //   },
-  //   gas: GAS_FOR_NFT_TRANSFER_CALL,
-  //   attachedDeposit: DEPOSIT
-  // });
-  // console.log("Staked");
+  await xu_account.functionCall({
+    contractId: NFT_CONTRACT_ID,
+    methodName: "nft_approve",
+    args: {
+      token_id: "3",
+      account_id: FARM_CONTRACT_ID,
+      msg: JSON.stringify({ staking_status: "Staking to Farm" })
+    },
+    gas: GAS_FOR_NFT_TRANSFER_CALL,
+    attachedDeposit: DEPOSIT
+  });
+  console.log("Staked");
 
   // await xu_account.functionCall({
   //   contractId: FARM_CONTRACT_ID,
@@ -97,19 +97,19 @@ const viewFunction = async () => {
   //   gas: GAS_FOR_NFT_TRANSFER_CALL,
   //   attachedDeposit: "1"
   // });
-  // console.log("Staked");
+  // console.log("Claimed");
 
   // await xu_account.functionCall({
   //   contractId: FARM_CONTRACT_ID,
   //   methodName: "unstake",
   //   args: {
   //     nft_contract_id: NFT_CONTRACT_ID,
-  //     token_id: "3"
+  //     token_id: "4"
   //   },
   //   gas: GAS_FOR_NFT_TRANSFER_CALL,
   //   attachedDeposit: "1"
   // });
-  // console.log("Staked");
+  // console.log("Unstaked");
 
   let supply = await xu_account.viewFunction(FARM_CONTRACT_ID, "get_supply_by_owner_id", {
     account_id: xu_account.accountId,
@@ -132,27 +132,7 @@ const viewFunction = async () => {
     account_id: xu_account.accountId,
     nft_contract_id: NFT_CONTRACT_ID
   });
-  console.log("ClaimAmount:", formatNearAmount(claim_amount));
-
-  // for (let i = 0; i < offers.length; i++) {
-  //   let offer = await xu_account.viewFunction(FARM_CONTRACT_ID, "get_offers", {
-  //     nft_contract_token: NFT_CONTRACT_ID + "||" + "7",
-  //   });
-  //   console.log("Offer:", offer);
-  // }
-
-  // await xu_account.functionCall({
-  //   contractId: NFT_CONTRACT_ID,
-  //   methodName: "nft_approve",
-  //   args: {
-  //     token_id: "6",
-  //     account_id: FARM_CONTRACT_ID,
-  //     msg: JSON.stringify({ approve_type: "AcceptOffer", account_id: xu_account.accountId, price: parseNearAmount("1.0") })
-  //   },
-  //   gas: MAX_GAS,
-  //   attachedDeposit: parseNearAmount("0.001")
-  // });
-  // console.log("Accept Offer");
+  console.log("ClaimAmount:", formatNearAmount(claim_amount + "000000"));
 
 };
 
