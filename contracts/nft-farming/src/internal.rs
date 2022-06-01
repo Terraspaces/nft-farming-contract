@@ -35,7 +35,13 @@ impl Contract {
         }
         
         let farm_spec = self.farm_specs.get(&nft_contract_id).unwrap();
-        by_owner_id.stacked_reward = by_owner_id.stacked_reward.checked_add(u128::from(now - by_owner_id.updated_at).checked_mul(farm_spec.reward_rate).unwrap().checked_mul(by_owner_id.token_ids.len().try_into().unwrap()).unwrap()).unwrap();
+        let mut rate = 0;
+        for index in 0..by_owner_id.token_ids.len() {
+            let contract_and_token_id = format!("{}{}{}", nft_contract_id, DELIMETER, by_owner_id.token_ids.get(index).unwrap());
+            rate = rate + self.token_rate.get(&contract_and_token_id.clone()).unwrap_or(1);
+        }
+
+        by_owner_id.stacked_reward = by_owner_id.stacked_reward.checked_add(u128::from(now - by_owner_id.updated_at).checked_mul(farm_spec.reward_rate).unwrap().checked_mul(rate).unwrap()).unwrap();
         by_owner_id.updated_at = now.clone();
         self.by_owner_id.insert(&account_id_and_contract_id.clone(), &by_owner_id);
     }

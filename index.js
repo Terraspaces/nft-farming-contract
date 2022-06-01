@@ -20,6 +20,32 @@ const GAS_FOR_NFT_TRANSFER_CALL = "300000000000000";
 const MAX_GAS = "300000000000000";
 const DEPOSIT = "540000000000000000000";
 // setting configuration based on input
+
+const token_rate = [];
+const Rate_Data = {
+  Kryptonite: 14,
+  Lunar: 8,
+  Quartz: 6,
+  Iceberg: 4,
+  Golden: 3,
+  Terra: 2
+};
+
+const fetchTrait = async () => {
+  for (let i = 1; i <= 777; i++) {
+    const result = await fetch("https://terraspaces_nft_1.mypinata.cloud/ipfs/QmeP2Gn7fjycGerqTiKZnexyYXvu5qvDVKq4WHdfzwL8bi/" + i + ".json");
+    const metadata = (await result.json())["attributes"];
+    for (let j = 0; j < metadata.length; j++) {
+      if (metadata[j]["trait_type"] == 'Terrain') {
+        token_rate.push({ token_id: i.toString(), rate: Rate_Data[metadata[j]["value"]] });
+        console.log(i, { token_id: i.toString(), rate: Rate_Data[metadata[j]["value"]] });
+        break;
+      }
+    }
+  }
+}
+
+
 switch (configSetting) {
   case "mainnet":
     config = {
@@ -49,14 +75,31 @@ switch (configSetting) {
     console.log(`please choose a configuration `);
 }
 
-const FARM_CONTRACT_ID = "terraspaces_farm_test_2.xuguangxia.testnet";
+const FARM_CONTRACT_ID = "terraspaces_farm_test_4.xuguangxia.testnet";
 const NFT_CONTRACT_ID = "launchpad_test_4.xuguangxia.testnet";
 
-const viewFunction = async () => {
+const doTransaction = async () => {
   //Load Your Account
   const near = await connect(config);
   const xu_account = await near.account("xuguangxia.testnet");
   const farm_account = await near.account(FARM_CONTRACT_ID);
+
+  // await fetchTrait();
+
+  // for (let i = 0; i < token_rate.length; i++) {
+  //   await xu_account.functionCall({
+  //     contractId: FARM_CONTRACT_ID,
+  //     methodName: "set_token_rate",
+  //     args: {
+  //       nft_contract_id: NFT_CONTRACT_ID,
+  //       token_id: token_rate[i].token_id,
+  //       rate: token_rate[i].rate.toString()
+  //     },
+  //     gas: GAS_FOR_RESOLVE_TRANSFER,
+  //     attachedDeposit: "0"
+  //   });
+  //   console.log("TokenRate Set", i);
+  // }
 
   // let balance = await farm_account.viewFunction("usdn.testnet", "ft_balance_of", {
   //   account_id: farm_account.accountId
@@ -75,18 +118,30 @@ const viewFunction = async () => {
   // });
   // console.log("USN returned");
 
-  await xu_account.functionCall({
-    contractId: NFT_CONTRACT_ID,
-    methodName: "nft_approve",
-    args: {
-      token_id: "3",
-      account_id: FARM_CONTRACT_ID,
-      msg: JSON.stringify({ staking_status: "Staking to Farm" })
-    },
-    gas: GAS_FOR_NFT_TRANSFER_CALL,
-    attachedDeposit: DEPOSIT
-  });
-  console.log("Staked");
+  // await xu_account.functionCall({
+  //   contractId: NFT_CONTRACT_ID,
+  //   methodName: "nft_approve",
+  //   args: {
+  //     token_id: "10",
+  //     account_id: FARM_CONTRACT_ID,
+  //     msg: JSON.stringify({ staking_status: "Staking to Farm" })
+  //   },
+  //   gas: GAS_FOR_NFT_TRANSFER_CALL,
+  //   attachedDeposit: DEPOSIT
+  // });
+  // console.log("Staked");
+
+  // await xu_account.functionCall({
+  //   contractId: FARM_CONTRACT_ID,
+  //   methodName: "unstake",
+  //   args: {
+  //     nft_contract_id: NFT_CONTRACT_ID,
+  //     token_id: "10"
+  //   },
+  //   gas: GAS_FOR_NFT_TRANSFER_CALL,
+  //   attachedDeposit: "1"
+  // });
+  // console.log("Unstaked");
 
   // await xu_account.functionCall({
   //   contractId: FARM_CONTRACT_ID,
@@ -98,18 +153,6 @@ const viewFunction = async () => {
   //   attachedDeposit: "1"
   // });
   // console.log("Claimed");
-
-  // await xu_account.functionCall({
-  //   contractId: FARM_CONTRACT_ID,
-  //   methodName: "unstake",
-  //   args: {
-  //     nft_contract_id: NFT_CONTRACT_ID,
-  //     token_id: "4"
-  //   },
-  //   gas: GAS_FOR_NFT_TRANSFER_CALL,
-  //   attachedDeposit: "1"
-  // });
-  // console.log("Unstaked");
 
   let supply = await xu_account.viewFunction(FARM_CONTRACT_ID, "get_supply_by_owner_id", {
     account_id: xu_account.accountId,
@@ -136,4 +179,5 @@ const viewFunction = async () => {
 
 };
 
-viewFunction();
+doTransaction();
+

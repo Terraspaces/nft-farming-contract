@@ -60,6 +60,7 @@ pub struct Contract {
     pub by_owner_id: LookupMap<AccountIdAndContract, StakeInfo>,
     pub by_contract_id: LookupMap<ContractAndTokenId, AccountId>,
     pub storage_deposits: LookupMap<AccountId, Balance>,
+    pub token_rate: LookupMap<ContractAndTokenId, u128>,
 }
 
 /// Helper structure to for keys of the persistent collections.
@@ -70,6 +71,7 @@ pub enum StorageKey {
     ByOwnerId,
     ByContractId,
     StorageDeposits,
+    TokenRate,
 }
 
 #[near_bindgen]
@@ -85,10 +87,11 @@ impl Contract {
             by_owner_id: LookupMap::new(StorageKey::ByOwnerId),
             by_contract_id: LookupMap::new(StorageKey::ByContractId),
             storage_deposits: LookupMap::new(StorageKey::StorageDeposits),
+            token_rate: LookupMap::new(StorageKey::TokenRate),
         };
         this.farm_specs.insert(&"launchpad_test_4.xuguangxia.testnet".to_string(), &FarmSpec{
             reward_token_id: "usdn.testnet".to_string(),
-            reward_rate: 771604938271,
+            reward_rate: 192901234568,
             staked_count: 0
         });
         
@@ -97,6 +100,13 @@ impl Contract {
 
     pub fn get_farm_contract_ids(&self) -> Vec<AccountId> {
         self.farm_specs.keys_as_vector().to_vec()
+    }
+
+    #[payable]
+    pub fn set_token_rate(&mut self, nft_contract_id: AccountId, token_id: String, rate: U128){
+        self.assert_owner();
+        let contract_and_token_id = format!("{}{}{}", nft_contract_id, DELIMETER, token_id);
+        self.token_rate.insert(&contract_and_token_id, &u128::from(rate));
     }
 
     #[payable]

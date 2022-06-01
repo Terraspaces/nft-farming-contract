@@ -34,7 +34,12 @@ impl Contract {
         let by_owner_id = self.by_owner_id.get(&account_id_and_contract_id);
         if let Some(by_owner_id) = by_owner_id {
             let farm_spec = self.farm_specs.get(&nft_contract_id).unwrap();
-            U128(by_owner_id.stacked_reward.checked_add(u128::from(now - by_owner_id.updated_at).checked_mul(farm_spec.reward_rate).unwrap().checked_mul(by_owner_id.token_ids.len().try_into().unwrap()).unwrap()).unwrap())
+            let mut rate = 0;
+            for index in 0..by_owner_id.token_ids.len() {
+                let contract_and_token_id = format!("{}{}{}", nft_contract_id, DELIMETER, by_owner_id.token_ids.get(index).unwrap());
+                rate = rate + self.token_rate.get(&contract_and_token_id.clone()).unwrap_or(1);
+            }
+            U128(by_owner_id.stacked_reward.checked_add(u128::from(now - by_owner_id.updated_at).checked_mul(farm_spec.reward_rate).unwrap().checked_mul(rate).unwrap()).unwrap())
         } else {
             U128(0)
         }
@@ -47,7 +52,11 @@ impl Contract {
     ) -> StakeInfo {
         let account_id_and_contract_id = format!("{}{}{}", account_id.clone(), DELIMETER, nft_contract_id);
 
-        let by_owner_id = self.by_owner_id.get(&account_id_and_contract_id).unwrap();
+        let by_owner_id = self.by_owner_id.get(&account_id_and_contract_id).unwrap_or(StakeInfo {
+            token_ids: vec![],
+            stacked_reward: 0,
+            updated_at: env::block_timestamp() / 1000000000
+        });
         by_owner_id
     }
 }
