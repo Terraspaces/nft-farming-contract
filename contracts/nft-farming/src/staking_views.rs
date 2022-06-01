@@ -11,6 +11,10 @@ use std::convert::TryFrom;
 #[near_bindgen]
 impl Contract {
     /// views
+    pub fn get_supply_stakers(&self) -> U64 {
+        U64(self.staker_ids.len())
+    }
+
     pub fn get_supply_farm(&self, nft_contract_id: AccountId) -> U64 {
         U64(self.farm_specs.get(&nft_contract_id.clone()).unwrap().staked_count)
     }

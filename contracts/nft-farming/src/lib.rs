@@ -102,6 +102,22 @@ impl Contract {
         self.farm_specs.keys_as_vector().to_vec()
     }
 
+    pub fn get_staker_ids(&self, from_index: U64, limit: u64) -> Vec<AccountId> {
+        let mut tmp = vec![];
+        let start = u64::from(from_index);
+        let end = min(start + limit, self.staker_ids.len());
+        for i in start..end {
+            let id = self.staker_ids.to_vec()
+            .get(i as usize)
+            .unwrap().to_string();
+            
+            tmp.push(
+                id
+            );
+        }
+        tmp
+    }
+
     #[payable]
     pub fn set_token_rate(&mut self, nft_contract_id: AccountId, token_id: String, rate: U128){
         self.assert_owner();
