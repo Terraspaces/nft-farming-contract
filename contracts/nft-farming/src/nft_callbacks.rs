@@ -46,6 +46,11 @@ impl NonFungibleTokenApprovalsReceiver for Contract {
             "owner_id should be signer_id"
         );
 
+        assert!(
+            self.farm_specs.keys_as_vector().to_vec().contains(&nft_contract_id.clone()),
+            "Not supported farm"
+        );
+
         // // enforce signer's storage is enough to cover + 1 more sale
 
         // let storage_amount = self.storage_amount().0;
