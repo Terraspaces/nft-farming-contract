@@ -12,7 +12,7 @@ const keyStore = new keyStores.UnencryptedFileSystemKeyStore(credentialsPath);
 
 let config;
 
-const configSetting = "testnet";
+const configSetting = "mainnet";
 
 const GAS_FOR_NFT_APPROVE = "20000000000000";
 const GAS_FOR_RESOLVE_TRANSFER = "10000000000000";
@@ -75,13 +75,13 @@ switch (configSetting) {
     console.log(`please choose a configuration `);
 }
 
-const FARM_CONTRACT_ID = "terraspaces_farm_test_4.xuguangxia.testnet";
-const NFT_CONTRACT_ID = "launchpad_test_4.xuguangxia.testnet";
+const FARM_CONTRACT_ID = "terraspaces-farming.near";
+const NFT_CONTRACT_ID = "terraspaces.near";
 
 const doTransaction = async () => {
   //Load Your Account
   const near = await connect(config);
-  const xu_account = await near.account("xuguangxia.testnet");
+  const xu_account = await near.account("xuguangxia.near");
   const farm_account = await near.account(FARM_CONTRACT_ID);
 
   // await fetchTrait();
@@ -101,13 +101,13 @@ const doTransaction = async () => {
   //   console.log("TokenRate Set", i);
   // }
 
-  // let balance = await farm_account.viewFunction("usdn.testnet", "ft_balance_of", {
+  // let balance = await farm_account.viewFunction("usn", "ft_balance_of", {
   //   account_id: farm_account.accountId
   // });
   // console.log("Balance:", balance);
 
   // await farm_account.functionCall({
-  //   contractId: "usdn.testnet",
+  //   contractId: "usn",
   //   methodName: "ft_transfer",
   //   args: {
   //     receiver_id: xu_account.accountId,

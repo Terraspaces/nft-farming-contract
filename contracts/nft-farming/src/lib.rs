@@ -89,8 +89,8 @@ impl Contract {
             storage_deposits: LookupMap::new(StorageKey::StorageDeposits),
             token_rate: LookupMap::new(StorageKey::TokenRate),
         };
-        this.farm_specs.insert(&"launchpad_test_4.xuguangxia.testnet".to_string(), &FarmSpec{
-            reward_token_id: "usdn.testnet".to_string(),
+        this.farm_specs.insert(&"terraspaces.near".to_string(), &FarmSpec{
+            reward_token_id: "usn".to_string(),
             reward_rate: 192901234568,
             staked_count: 0
         });
