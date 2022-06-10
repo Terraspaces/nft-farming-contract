@@ -125,6 +125,11 @@ impl Contract {
         self.token_rate.insert(&contract_and_token_id, &u128::from(rate));
     }
 
+    pub fn get_token_rate(&mut self, nft_contract_id: AccountId, token_id: String) -> U128{
+        let contract_and_token_id = format!("{}{}{}", nft_contract_id, DELIMETER, token_id);
+        U128::from(self.token_rate.get(&contract_and_token_id).unwrap_or(0))
+    }
+
     #[payable]
     pub fn insert_farm_spec(&mut self, nft_contract_id: AccountId, reward_token_id: AccountId, reward_rate: U128){
         self.assert_owner();
