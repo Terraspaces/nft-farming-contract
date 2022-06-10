@@ -154,28 +154,34 @@ const doTransaction = async () => {
   // });
   // console.log("Claimed");
 
-  let supply = await xu_account.viewFunction(FARM_CONTRACT_ID, "get_supply_by_owner_id", {
-    account_id: xu_account.accountId,
-    nft_contract_id: NFT_CONTRACT_ID
+  let rate = await xu_account.viewFunction(FARM_CONTRACT_ID, "get_token_rate", {
+    nft_contract_id: NFT_CONTRACT_ID,
+    token_id: "44"
   });
-  console.log("Supply:", supply);
+  console.log("Rate:", rate);
 
-  let farm_supply = await xu_account.viewFunction(FARM_CONTRACT_ID, "get_supply_farm", {
-    nft_contract_id: NFT_CONTRACT_ID
-  });
-  console.log("FarmSupply:", farm_supply);
+  // let supply = await xu_account.viewFunction(FARM_CONTRACT_ID, "get_supply_by_owner_id", {
+  //   account_id: xu_account.accountId,
+  //   nft_contract_id: NFT_CONTRACT_ID
+  // });
+  // console.log("Supply:", supply);
 
-  let stake_info = await xu_account.viewFunction(FARM_CONTRACT_ID, "get_staking_informations_by_owner_id", {
-    account_id: xu_account.accountId,
-    nft_contract_id: NFT_CONTRACT_ID
-  });
-  console.log("StakeInfo:", stake_info);
+  // let farm_supply = await xu_account.viewFunction(FARM_CONTRACT_ID, "get_supply_farm", {
+  //   nft_contract_id: NFT_CONTRACT_ID
+  // });
+  // console.log("FarmSupply:", farm_supply);
 
-  let claim_amount = await xu_account.viewFunction(FARM_CONTRACT_ID, "get_claim_amount_by_owner_id", {
-    account_id: xu_account.accountId,
-    nft_contract_id: NFT_CONTRACT_ID
-  });
-  console.log("ClaimAmount:", formatNearAmount(claim_amount + "000000"));
+  // let stake_info = await xu_account.viewFunction(FARM_CONTRACT_ID, "get_staking_informations_by_owner_id", {
+  //   account_id: xu_account.accountId,
+  //   nft_contract_id: NFT_CONTRACT_ID
+  // });
+  // console.log("StakeInfo:", stake_info);
+
+  // let claim_amount = await xu_account.viewFunction(FARM_CONTRACT_ID, "get_claim_amount_by_owner_id", {
+  //   account_id: xu_account.accountId,
+  //   nft_contract_id: NFT_CONTRACT_ID
+  // });
+  // console.log("ClaimAmount:", formatNearAmount(claim_amount + "000000"));
 
 };
 
