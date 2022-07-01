@@ -106,8 +106,9 @@ impl Contract {
         let mut tmp = vec![];
         let start = u64::from(from_index);
         let end = min(start + limit, self.staker_ids.len());
+        let staker_ids_vec = self.staker_ids.to_vec();
         for i in start..end {
-            let id = self.staker_ids.to_vec()
+            let id = staker_ids_vec
             .get(i as usize)
             .unwrap().to_string();
             
