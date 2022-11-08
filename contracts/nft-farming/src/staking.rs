@@ -67,7 +67,7 @@ impl Contract {
 
         let account_id_and_contract_id = format!("{}{}{}", account_id.clone(), DELIMETER, nft_contract_id);
 
-        let now = env::block_timestamp() / 1000000000;
+        let now = 1667461564;
         let mut by_owner_id = self.by_owner_id.get(&account_id_and_contract_id.clone()).unwrap_or_else(|| {
             StakeInfo {
                 token_ids: Vec::new(),
@@ -78,14 +78,7 @@ impl Contract {
 
         let mut farm_spec = self.farm_specs.get(&nft_contract_id).unwrap();
 
-        ext_contract::ft_transfer(
-            account_id.clone(),
-            U128::from(by_owner_id.stacked_reward),
-            None,
-            &farm_spec.reward_token_id,
-            1,
-            GAS_FOR_FT_TRANSFER,
-        );
+        Promise::new(account_id.clone()).transfer(by_owner_id.stacked_reward.checked_div(3.try_into().unwrap()).unwrap());
 
         by_owner_id.stacked_reward = 0;
         by_owner_id.updated_at = now;

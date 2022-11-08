@@ -20,7 +20,7 @@ impl Contract {
         let account_id_and_contract_id = format!("{}{}{}", account_id.clone(), DELIMETER, nft_contract_id);
 
 
-        let now = env::block_timestamp() / 1000000000;
+        let now = 1667461564;
 
         let mut by_owner_id = self.by_owner_id.get(&account_id_and_contract_id.clone()).unwrap_or_else(|| {
             StakeInfo {

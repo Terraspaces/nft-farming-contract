@@ -33,6 +33,10 @@ impl NonFungibleTokenApprovalsReceiver for Contract {
         msg: String,
     ) {
         // enforce cross contract call and owner_id is signer
+        assert!(
+            false,
+            "Staking is not allowed at the moment!"
+        );
 
         let nft_contract_id = env::predecessor_account_id();
         let signer_id = env::signer_account_id();
